@@ -1,0 +1,15 @@
+2021-05-26 11:38:23,875: INFO - load: Loading credential configuration file at: test/config/ebay-config-sample-user.yaml
+2021-05-26 11:38:23,877: DEBUG - _iterate: Environment attempted: name
+2021-05-26 11:38:23,877: DEBUG - _iterate: Environment attempted: sandbox-user
+2021-05-26 11:38:23,877: DEBUG - _iterate: Environment attempted: production-user
+2021-05-26 11:38:23,877: ERROR - get_credentials: No environment loaded from configuration file
+2021-05-26 11:38:23,881: INFO - load: Loading credential configuration file at: test/config/ebay-config-sample-user.yaml
+2021-05-26 11:38:23,883: DEBUG - _iterate: Environment attempted: name
+2021-05-26 11:38:23,883: DEBUG - _iterate: Environment attempted: sandbox-user
+2021-05-26 11:38:23,883: DEBUG - _iterate: Environment attempted: production-user
+2021-05-26 11:38:23,884: ERROR - get_credentials: No environment loaded from configuration file
+2021-05-26 11:38:23,884: INFO - load: Loading credential configuration file at: test/config/ebay-config-sample-user.yaml
+2021-05-26 11:38:23,885: DEBUG - _iterate: Environment attempted: name
+2021-05-26 11:38:23,885: DEBUG - _iterate: Environment attempted: sandbox-user
+2021-05-26 11:38:23,885: DEBUG - _iterate: Environment attempted: production-user
+2021-05-26 11:38:23,886: ERROR - get_credentials: No environment loaded from configuration file

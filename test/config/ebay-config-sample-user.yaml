@@ -1,0 +1,13 @@
+api.ebay.com:
+  compatability: 719
+  appid: IlyasAch-Dropmake-PRD-a5b6bbf50-f706faf8
+  certid: PRD-5b74dfd41963-46f2-481c-8b5a-1d97
+  devid: 346a20b4-687d-47c5-964d-56ea5206d219
+  redirecturi: 'Ilyas_Achekeev-IlyasAch-Dropma-manhf'
+
+api.sandbox.ebay.com:
+  compatability: 719
+  appid: IlyasAch-Dropmake-SBX-05b89c3bd-3eb67f0c
+  certid: SBX-5b89c3bd6da3-942a-4db3-b095-8538
+  devid: 346a20b4-687d-47c5-964d-56ea5206d219
+  redirecturi: 'Ilyas_Achekeev-IlyasAch-Dropma-jobkppbt'
