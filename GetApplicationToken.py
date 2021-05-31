@@ -20,9 +20,9 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.split(__file__)[0], '..'))
-from oauthclient.oauth2api import oauth2api
-from oauthclient.credentialutil import credentialutil
-from oauthclient.model.model import environment
+from oauthclient.oauth2api import Oauth2api
+from oauthclient.credentialutil import Credentialutil
+from oauthclient.model.model import Environment
 import unittest
 
 app_scopes = ["https://api.ebay.com/oauth/api_scope", "https://api.ebay.com/oauth/api_scope/buy.item.feed"]
@@ -33,18 +33,18 @@ class TestGetApplicationCredential(unittest.TestCase):
 
     def test_invalid_oauth_scope(self):
         config_path = os.path.join(os.path.split(__file__)[0], 'config', 'ebay-config-sample.yaml')
-        credentialutil.load(config_path)
-        oauth2api_inst = oauth2api()
-        app_token = oauth2api_inst.get_application_token(environment.SANDBOX, invalid_app_scopes)
+        Credentialutil.load(config_path)
+        oauth2api_inst = Oauth2api()
+        app_token = oauth2api_inst.get_application_token(Environment.SANDBOX, invalid_app_scopes)
         self.assertIsNone(app_token.access_token)
         self.assertIsNotNone(app_token.error)
         print('\n *** test_invalid_oauth_scope ***\n', app_token)
 
     def test_client_credentials_grant_sandbox(self):
         config_path = os.path.join(os.path.split(__file__)[0], 'config', 'ebay-config-sample.yaml')
-        credentialutil.load(config_path)
-        oauth2api_inst = oauth2api()
-        app_token = oauth2api_inst.get_application_token(environment.SANDBOX, app_scopes)
+        Credentialutil.load(config_path)
+        oauth2api_inst = Oauth2api()
+        app_token = oauth2api_inst.get_application_token(Environment.SANDBOX, app_scopes)
         self.assertIsNone(app_token.error)
         self.assertIsNotNone(app_token.access_token)
         self.assertTrue(len(app_token.access_token) > 0)
@@ -52,9 +52,9 @@ class TestGetApplicationCredential(unittest.TestCase):
 
     def test_client_credentials_grant_production(self):
         config_path = os.path.join(os.path.split(__file__)[0], 'config', 'ebay-config-sample.yaml')
-        credentialutil.load(config_path)
-        oauth2api_inst = oauth2api()
-        app_token = oauth2api_inst.get_application_token(environment.PRODUCTION, app_scopes)
+        Credentialutil.load(config_path)
+        oauth2api_inst = Oauth2api()
+        app_token = oauth2api_inst.get_application_token(Environment.PRODUCTION, app_scopes)
         self.assertIsNone(app_token.error)
         self.assertIsNotNone(app_token.access_token)
         self.assertTrue(len(app_token.access_token) > 0)

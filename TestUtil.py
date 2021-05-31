@@ -43,7 +43,7 @@ def get_authorization_code(signin_url):
     userid = _user_credential_list[env_key][0]
     password = _user_credential_list[env_key][1]
 
-    browser = webdriver.Chrome('/Users/user/Desktop/chromedriver')
+    browser = webdriver.Firefox('/home/t2elzeth/Documents/code')
     browser.get(signin_url)
     time.sleep(5)
 

@@ -1,7 +1,7 @@
 name: test-config
 
 # https://developer.ebay.com/DevZone/SandboxUser/
-# Register a sandbox test user and use that credentials here
+# Register a sandbox test user and use that Credentials here
 #sandbox-user:
 #    username: achekeev88@gmail.com
 #    password: 147852zxc@
@@ -9,7 +9,7 @@ sandbox-user:
     username: dakt.kg@gmail.com
     password: liderkgz312!
 
-# Register a production test user and use that credentials here - https://reg.ebay.com/reg/PartialReg
+# Register a production test user and use that Credentials here - https://reg.ebay.com/reg/PartialReg
 production-user:
     username: dakt.kg@gmail.com
     password: liderkgz312!

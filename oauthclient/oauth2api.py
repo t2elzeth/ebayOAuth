@@ -1,43 +1,18 @@
-# -*- coding: utf-8 -*-
-"""
-Copyright 2019 eBay Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-You may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and
-limitations under the License.
-"""
-
 import json
-import urllib
-import requests
 import logging
-from .model import util
+import urllib
 from datetime import datetime, timedelta
-from .credentialutil import credentialutil
-from .model.model import oAuth_token
 
-LOGFILE = 'eBay_Oauth_log.txt'
-logging.basicConfig(level=logging.DEBUG, filename=LOGFILE,
-                    format="%(asctime)s: %(levelname)s - %(funcName)s: %(message)s", filemode='w')
+import requests
+
+from .credentialutil import Credentialutil
+from .model import util
+from .model.model import EbayOAuthToken
 
 
-class oauth2api(object):
+class Oauth2api:
     def generate_user_authorization_url(self, env_type, scopes, state=None):
-        '''
-            env_type = environment.SANDBOX or environment.PRODUCTION
-            scopes = list of strings
-        '''
-
-        credential = credentialutil.get_credentials(env_type)
+        credential = Credentialutil.get_credentials(env_type)
 
         scopes = ' '.join(scopes)
         param = {
@@ -48,7 +23,7 @@ class oauth2api(object):
             'scope': scopes
         }
 
-        if state != None:
+        if state is not None:
             param.update({'state': state})
 
         query = urllib.parse.urlencode(param)
@@ -61,13 +36,13 @@ class oauth2api(object):
         """
 
         logging.info("Trying to get a new application access token ... ")
-        credential = credentialutil.get_credentials(env_type)
-        headers = util._generate_request_headers(credential)
-        body = util._generate_application_request_body(credential, ' '.join(scopes))
+        credential = Credentialutil.get_credentials(env_type)
+        headers = util.generate_request_headers(credential)
+        body = util.generate_application_request_body(credential, ' '.join(scopes))
 
         resp = requests.post(env_type.api_endpoint, data=body, headers=headers)
         content = json.loads(resp.content)
-        token = oAuth_token()
+        token = EbayOAuthToken()
 
         if resp.status_code == requests.codes.ok:
             token.access_token = content['access_token']
@@ -77,21 +52,18 @@ class oauth2api(object):
 
         else:
             token.error = str(resp.status_code) + ': ' + content['error_description']
-            logging.error("Unable to retrieve token.  Status code: %s - %s", resp.status_code,
-                          requests.status_codes._codes[resp.status_code])
-            logging.error("Error: %s - %s", content['error'], content['error_description'])
         return token
 
     def exchange_code_for_access_token(self, env_type, code):
         logging.info("Trying to get a new user access token ... ")
-        credential = credentialutil.get_credentials(env_type)
+        credential = Credentialutil.get_credentials(env_type)
 
-        headers = util._generate_request_headers(credential)
-        body = util._generate_oauth_request_body(credential, code)
+        headers = util.generate_request_headers(credential)
+        body = util.generate_oauth_request_body(credential, code)
         resp = requests.post(env_type.api_endpoint, data=body, headers=headers)
 
         content = json.loads(resp.content)
-        token = oAuth_token()
+        token = EbayOAuthToken()
 
         if resp.status_code == requests.codes.ok:
             token.access_token = content['access_token']
@@ -102,9 +74,6 @@ class oauth2api(object):
                 seconds=int(content['refresh_token_expires_in'])) - timedelta(minutes=5)
         else:
             token.error = str(resp.status_code) + ': ' + content['error_description']
-            logging.error("Unable to retrieve token.  Status code: %s - %s", resp.status_code,
-                          requests.status_codes._codes[resp.status_code])
-            logging.error("Error: %s - %s", content['error'], content['error_description'])
         return token
 
     def get_access_token(self, env_type, refresh_token, scopes):
@@ -112,15 +81,13 @@ class oauth2api(object):
         refresh token call
         """
 
-        logging.info("Trying to get a new user access token ... ")
+        credential = Credentialutil.get_credentials(env_type)
 
-        credential = credentialutil.get_credentials(env_type)
-
-        headers = util._generate_request_headers(credential)
-        body = util._generate_refresh_request_body(' '.join(scopes), refresh_token)
+        headers = util.generate_request_headers(credential)
+        body = util.generate_refresh_request_body(' '.join(scopes), refresh_token)
         resp = requests.post(env_type.api_endpoint, data=body, headers=headers)
         content = json.loads(resp.content)
-        token = oAuth_token()
+        token = EbayOAuthToken()
         token.token_response = content
 
         if resp.status_code == requests.codes.ok:
@@ -129,7 +96,4 @@ class oauth2api(object):
                 minutes=5)
         else:
             token.error = str(resp.status_code) + ': ' + content['error_description']
-            logging.error("Unable to retrieve token.  Status code: %s - %s", resp.status_code,
-                          requests.status_codes._codes[resp.status_code])
-            logging.error("Error: %s - %s", content['error'], content['error_description'])
         return token
