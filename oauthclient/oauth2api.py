@@ -29,31 +29,6 @@ class Oauth2api:
         query = urllib.parse.urlencode(param)
         return env_type.web_endpoint + '?' + query
 
-    def get_application_token(self, env_type, scopes):
-        """
-            makes call for application token and stores result in credential object
-            returns credential object
-        """
-
-        logging.info("Trying to get a new application access token ... ")
-        credential = Credentialutil.get_credentials(env_type)
-        headers = util.generate_request_headers(credential)
-        body = util.generate_application_request_body(credential, ' '.join(scopes))
-
-        resp = requests.post(env_type.api_endpoint, data=body, headers=headers)
-        content = json.loads(resp.content)
-        token = EbayOAuthToken()
-
-        if resp.status_code == requests.codes.ok:
-            token.access_token = content['access_token']
-            # set token expiration time 5 minutes before actual expire time
-            token.token_expiry = datetime.utcnow() + timedelta(seconds=int(content['expires_in'])) - timedelta(
-                minutes=5)
-
-        else:
-            token.error = str(resp.status_code) + ': ' + content['error_description']
-        return token
-
     def exchange_code_for_access_token(self, env_type, code):
         logging.info("Trying to get a new user access token ... ")
         credential = Credentialutil.get_credentials(env_type)
